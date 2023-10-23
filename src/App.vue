@@ -58,14 +58,13 @@
 <script>
     import Worker from './js/vanity.js';
 
-    import Err from './vue/Error';
     import UserInput from './vue/Input';
     import Result from './vue/Result';
     import Save from './vue/Save.vue';
     import Statistics from './vue/Statistics';
 
     export default {
-        components: { Err, UserInput, Statistics, Result, Save },
+        components: { UserInput, Statistics, Result, Save },
         data: function () {
             return {
                 running: false,
