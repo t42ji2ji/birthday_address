@@ -15,18 +15,24 @@
                 </div>
             </div>
             <div class="col-lg-2 col-12">
-                <button data-remodal-target="modal" class="save button-large" :disabled="!privateKey">
-                    <i class="icon-lock"></i>Save
+                <button class="save button-large" :disabled="!privateKey" @click="toggleQrcode">
+                    <i class="icon-lock"></i>Show Qrcode
                 </button>
             </div>
+            <div style="margin-top: 20px" v-if="privateKey && showQrcode">
+                <qrcode-vue :value="privateKey" size="200" level="H" />
+            </div>
+            <!-- <qrcode-vue value="value" :size="size" level="H" /> -->
         </div>
     </div>
 </template>
 
 <script>
     import * as blockies from 'blockies';
+    import QrcodeVue from 'qrcode.vue';
 
     export default {
+        components: { QrcodeVue },
         props: {
             address: String,
             privateKey: String,
@@ -34,6 +40,8 @@
         data: function () {
             return {
                 reveal: false,
+                size: 128,
+                showQrcode: false,
             };
         },
         watch: {
@@ -47,6 +55,9 @@
             },
         },
         methods: {
+            toggleQrcode() {
+                this.showQrcode = !this.showQrcode;
+            },
             revealKey() {
                 this.reveal = true;
             },

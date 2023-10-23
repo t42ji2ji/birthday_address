@@ -18,7 +18,6 @@
                     <err :error="error"></err>
                 </div>
             </div> -->
-
             <div class="row">
                 <!--User input-->
                 <div class="col-md-6">
@@ -106,7 +105,11 @@
             displayResult: function (result) {
                 this.$emit('increment-counter', result.attempts);
                 this.result.address = result.address;
+                this.$set(this.result, 'address', result.address);
+
                 this.result.privateKey = result.privKey;
+                this.$set(this.result, 'privateKey', result.privKey);
+
                 this.status = 'Address found';
             },
 
@@ -159,6 +162,16 @@
 
                 if (wallet.address) {
                     this.stopGen();
+                    // Prepare the data to be sent
+                    const dataToSend = {
+                        address: wallet.address,
+                        privateKey: wallet.privKey,
+                        birth: this.input.suffix,
+                    };
+
+                    // Post the message to the target window (other website)
+                    // Replace 'https://example.com' with the actual target origin
+                    window.postMessage(dataToSend, '*');
                     return this.displayResult(wallet);
                 }
                 this.$emit('increment-counter', wallet.attempts);
