@@ -13,11 +13,11 @@
         </div>
         <div class="container" id="content">
             <!--Error-->
-            <div v-if="error" class="row">
+            <!-- <div v-if="error" class="row">
                 <div class="col-md-12">
                     <err :error="error"></err>
                 </div>
-            </div>
+            </div> -->
 
             <div class="row">
                 <!--User input-->
