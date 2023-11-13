@@ -38,11 +38,9 @@
 
         <!--Save modal-->
         <save :address="result.address.toLowerCase()" :private-key="result.privateKey"></save>
-        <div class="container" id="content" style="color: #a2a2a2; cursor: pointer">
-            <div style="text-decoration: underline" @click="toggleTerms">
-                {{ showTerms ? '▾' : '▸' }} terms of service
-            </div>
-            <div v-if="showTerms" style="color: #a2a2a2; text-decoration: none; margin-top: 1rem">
+        <div v-if="!running" class="container" id="content" style="color: #a2a2a2; cursor: pointer">
+            <div @click="toggleTerms" style="width: fit-content">{{ showTerms ? '▾' : '▸' }} terms of service</div>
+            <div v-if="showTerms" style="color: #a2a2a2; margin-top: 1rem">
                 - 注意事項： 親愛的使用者，
                 歡迎您參加我們的活動並體驗靈魂錢包的魅力！在這裡，我們將為您生成一個獨一無二的錢包地址與私鑰，這是您在區塊鏈宇宙通行的重要門票。但在此，我們也想提醒您幾個關鍵的事項：
                 1. 私鑰保管：您對保護和使用您的私鑰擁有絕對的權利與義務。一旦遺失或洩露，可能會導致資產不可挽回的損失。

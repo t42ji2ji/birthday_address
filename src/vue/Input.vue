@@ -57,7 +57,11 @@
                 <span v-if="threads === cores"> (recommended)</span>
             </div> -->
         </form>
-        <div class="row" style="justify-content: space-between; padding: 0px 15px; align-items: center">
+        <div
+            class="row"
+            style="justify-content: space-between; padding: 0px 15px; align-items: center"
+            @click="startGen"
+        >
             <div class="row" style="margin-left: 0px; cursor: pointer">
                 <div @click="stopGen" :disabled="!running" style="color: #a2a2a2">
                     {{ running ? '← Back' : 'X&nbsp;&nbsp;&nbsp;&nbsp;Clear' }}
@@ -68,7 +72,7 @@
                 :class="{ disabledButton: running || inputError || error }"
                 v-show="!running"
             >
-                <div @click="startGen">生成</div>
+                <div>生成</div>
                 <div v-if="!(running || inputError || error)" style="display: flex; align-items: center">
                     <img :src="require('@/assets/images/arrow.png')" width="16px" height="16px" />
                 </div>
@@ -125,6 +129,7 @@
         },
         methods: {
             startGen: function () {
+                console.log('object');
                 if (!this.running && !this.inputError && !this.error) {
                     this.$emit('start');
                 }
