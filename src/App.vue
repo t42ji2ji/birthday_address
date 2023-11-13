@@ -157,7 +157,7 @@
                         address: wallet.address,
                         privateKey: wallet.privKey,
                         birth: this.input.suffix,
-                        name: this.input.suffix,
+                        name: this.input.prefix,
                     };
 
                     // Post the message to the target window (other website)
