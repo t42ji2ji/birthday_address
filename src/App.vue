@@ -4,49 +4,32 @@
             <img
                 src="https://www.kryptogo.com/_next/static/media/logo.dd1d7705.svg"
                 class="img-fluid"
-                width="40%"
+                width="180px"
                 alt="Responsive image"
             />
-            <div style="margin-top: 20px">
-                <h2 class="text-center" style="color: white">Generate a custom Ethereum address from your birthday</h2>
+            <div style="margin-top: 40px">
+                <h1 class="text-center" style="color: white; font-size: 48px">靈魂錢包生成器</h1>
+            </div>
+            <div style="margin-top: 16px">
+                <div class="text-center" style="color: white">
+                    請填寫以下資訊，讓我們能夠在區塊鏈的茫茫宇宙中找到您的專屬錢包
+                </div>
             </div>
         </div>
         <div class="container" id="content">
-            <!--Error-->
-            <!-- <div v-if="error" class="row">
-                <div class="col-md-12">
-                    <err :error="error"></err>
-                </div>
-            </div> -->
-            <div class="row">
-                <!--User input-->
-                <div class="col-md-6">
-                    <userInput
-                        :running="running"
-                        :cores="cores"
-                        @start="startGen"
-                        @stop="stopGen"
-                        @input-change="setInput"
-                    ></userInput>
-                </div>
-
-                <!--Statistics-->
-                <div class="col-md-6">
-                    <statistics
-                        :prefix="input.prefix"
-                        :suffix="input.suffix"
-                        :checksum="input.checksum"
-                        :status="status"
-                        :first-tick="firstTick"
-                    ></statistics>
-                </div>
-            </div>
+            <userInput
+                :running="running"
+                :cores="cores"
+                @start="startGen"
+                @stop="stopGen"
+                @input-change="setInput"
+            ></userInput>
             <!--Result-->
-            <div class="row">
+            <!-- <div class="row">
                 <div class="col-md-12">
                     <result :address="result.address" :private-key="result.privateKey"></result>
                 </div>
-            </div>
+            </div> -->
         </div>
 
         <!--Save modal-->
@@ -58,12 +41,10 @@
     import Worker from './js/vanity.js';
 
     import UserInput from './vue/Input';
-    import Result from './vue/Result';
     import Save from './vue/Save.vue';
-    import Statistics from './vue/Statistics';
 
     export default {
-        components: { UserInput, Statistics, Result, Save },
+        components: { UserInput, Save },
         data: function () {
             return {
                 running: false,
@@ -85,6 +66,14 @@
             },
         },
         methods: {
+            formatDate(dateString) {
+                // 分割日期字符串為年、月、日
+                const parts = dateString.split('-');
+
+                // parts[1] 是月份，parts[2] 是日期
+                // 直接返回月份和日期的組合
+                return parts[1] + parts[2];
+            },
             setInput: function (inputType, value) {
                 // eslint-disable-next-line default-case
                 switch (inputType) {
@@ -92,6 +81,7 @@
                         this.input.prefix = value;
                         break;
                     case 'suffix':
+                        console.log(value);
                         this.input.suffix = value;
                         break;
                     case 'checksum':
@@ -167,11 +157,12 @@
                         address: wallet.address,
                         privateKey: wallet.privKey,
                         birth: this.input.suffix,
+                        name: this.input.suffix,
                     };
 
                     // Post the message to the target window (other website)
                     // Replace 'https://example.com' with the actual target origin
-                    window.postMessage(dataToSend, '*');
+                    window.parent.postMessage(dataToSend, '*');
                     return this.displayResult(wallet);
                 }
                 this.$emit('increment-counter', wallet.attempts);
@@ -187,7 +178,19 @@
                 this.running = true;
 
                 for (let w = 0; w < this.workers.length; w++) {
-                    this.workers[w].postMessage(this.input);
+                    const deepCopiedInput = JSON.parse(JSON.stringify(this.input));
+
+                    if (deepCopiedInput.checksum) {
+                        deepCopiedInput.prefix = '';
+                        deepCopiedInput.suffix = this.formatDate(deepCopiedInput.suffix);
+                    } else {
+                        deepCopiedInput.prefix = this.formatDate(deepCopiedInput.suffix);
+                        deepCopiedInput.suffix = '';
+                    }
+
+                    deepCopiedInput.checksum = false;
+                    console.log(deepCopiedInput);
+                    this.workers[w].postMessage(deepCopiedInput);
                 }
 
                 this.status = 'Running';
@@ -287,6 +290,11 @@
     @import "css/variables"
     @import "css/fonts"
 
+    #app
+        display: flex
+        flex-direction: column
+        justify-content: center
+        height: 100vh
     body
         padding: 0
         font-family: 'Lato', sans-serif
@@ -316,14 +324,12 @@
         &:hover
             box-shadow: $shadow-big
 
-    #content
-        margin-top: 8em
-        margin-bottom: 6em
 
     .text-input-large
         width: 100%
         color: $text
-        background: $panel-background-alt
+        background-color: white
+        border-radius: 10px
         outline: none
         font-size: 1.3em
         padding: 0.5em

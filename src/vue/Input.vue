@@ -1,60 +1,42 @@
 <template>
-    <div class="panel" id="input-panel">
-        <form @submit.prevent="startGen">
-            <div class="error-text" v-if="inputError">Numbers and letters from A to F only</div>
-
+    <div id="input-panel">
+        <div v-if="running">
+            <div class="spinner">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>
+        <form @submit.prevent="startGen" v-if="!running">
+            <!-- <div class="error-text" v-if="inputError">Numbers and letters from A to F only</div> -->
             <div class="row">
                 <div class="col-12 col-sm-6 col-md-12 col-lg-6">
+                    <div style="color: white; margin-bottom: 8px">姓名</div>
                     <input
-                        :class="{ error: prefixError }"
                         type="text"
                         class="text-input-large"
                         id="input"
-                        placeholder="Prefix"
+                        placeholder="請輸入你的名字（10字以內)"
+                        :disabled="running"
                         v-model="prefix"
-                        :disabled="running"
+                        maxlength="10"
                     />
                 </div>
-                <div class="col-12 col-sm-6 col-md-12 col-lg-6">
-                    <input
-                        :class="{ error: suffixError }"
-                        type="text"
-                        class="text-input-large"
-                        id="input"
-                        placeholder="Suffix"
-                        v-model="suffix"
-                        :disabled="running"
-                    />
+                <div class="col-12 col-sm-6 col-md-12 col-lg-6" :class="{ inputColor: !suffixError }">
+                    <div style="color: white; margin-bottom: 8px">生日</div>
+                    <input type="date" class="text-input-large" id="input" v-model="suffix" :disabled="running" />
                 </div>
             </div>
-            <div class="row justify-content-center hide-render">
-                <div class="spinner">
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                </div>
-            </div>
-            <div class="example hide-prerender">
-                E.g.&nbsp;
-                <span v-if="inputError" class="monospace">N/A</span>
-                <span v-else class="monospace">
-                    0x<!--
-                    --><b v-if="example.prefix" v-text="example.prefix"></b
-                    ><!--
-                    --><span v-text="example.random"></span
-                    ><!--
-                    --><b v-if="example.suffix" v-text="example.suffix"></b>
-                </span>
-            </div>
+
             <div class="controls hide-prerender">
-                <label class="checkbox">
+                <label class="checkbox" style="color: white">
                     <input type="checkbox" name="checkbox" checked="" v-model="checksum" :disabled="running" />
                     <i class="left"> </i>
-                    Case-sensitive
+                    生成在結尾
                 </label>
             </div>
-            <div class="threads hide-prerender">
+            <!-- <div class="threads hide-prerender">
                 <input
                     type="button"
                     class="square-btn button-large"
@@ -72,31 +54,30 @@
                 <h4 v-text="threads"></h4>
                 <span>&nbsp;threads</span>
                 <span v-if="threads === cores"> (recommended)</span>
-            </div>
-            <div class="row">
-                <div class="col-lg-6 col-sm-12">
-                    <input type="button" value="Generate" class="button-large hide-render" disabled />
-                    <input
-                        type="button"
-                        value="Generate"
-                        class="button-large hide-prerender"
-                        @click="startGen"
-                        :disabled="running || inputError || error"
-                    />
-                </div>
-                <div class="col-lg-6 col-sm-12">
-                    <input type="button" value="Stop" class="button-large" @click="stopGen" :disabled="!running" />
-                </div>
-            </div>
+            </div> -->
         </form>
+        <div class="row" style="justify-content: space-between; padding: 0px 15px; align-items: center">
+            <div class="row" style="margin-left: 0px">
+                <div @click="stopGen" :disabled="!running" style="color: #a2a2a2">X&nbsp;&nbsp;&nbsp;&nbsp;Clear</div>
+            </div>
+            <div
+                class="gen-btn row button-large"
+                :class="{ disabledButton: running || inputError || error }"
+                v-show="!running"
+            >
+                <div>
+                    <input type="button" value="Generate" class="hide-render" disabled />
+                    <div @click="startGen">生成</div>
+                </div>
+                <div v-if="!(running || inputError || error)" style="display: flex; align-items: center">
+                    <img :src="require('@/assets/images/arrow.png')" width="16px" height="16px" />
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
-    const isValidHex = function (hex) {
-        return hex.length ? /^[0-9A-F]+$/g.test(hex.toUpperCase()) : true;
-    };
-
     function mixCase(str) {
         let ret = '';
         for (let i = 0; i < str.length; i++) {
@@ -115,16 +96,16 @@
                 threads: this.$props.cores || 4,
                 prefix: '',
                 suffix: '',
-                checksum: true,
+                checksum: false,
                 error: false,
             };
         },
         computed: {
             prefixError: function () {
-                return !isValidHex(this.prefix);
+                return !this.prefix;
             },
             suffixError: function () {
-                return !isValidHex(this.suffix);
+                return !this.suffix;
             },
             inputError: function () {
                 return this.prefixError || this.suffixError;
@@ -162,9 +143,9 @@
             checksum: function () {
                 this.$emit('input-change', 'checksum', this.checksum);
             },
-            threads: function () {
-                this.$emit('input-change', 'threads', this.threads);
-            },
+            // threads: function () {
+            //     this.$emit('input-change', 'threads', this.threads);
+            // },
         },
     };
 </script>
@@ -174,6 +155,38 @@
     .panel
         min-height: 280px
 
+
+    .gen-btn
+        border-radius: 12px
+        width: fit-content
+        color: rgba(27, 37, 89, 1)
+        padding: 16px 24px
+        margin: 0 !important
+    .button-large:disabled
+        color: #666666
+        background-color: none
+    .disabledButton
+        background-color: #989898
+        color: #C7C7C7
+
+    input[type="button"]
+        background-color: none
+        border: none
+    input[type="date"]
+        // WebKit-based browsers
+        &::-webkit-datetime-edit-text,
+        &::-webkit-datetime-edit-month-field,
+        &::-webkit-datetime-edit-day-field,
+        &::-webkit-datetime-edit-year-field
+            color: gray
+    .inputColor
+        input[type="date"]
+            // WebKit-based browsers
+            &::-webkit-datetime-edit-text,
+            &::-webkit-datetime-edit-month-field,
+            &::-webkit-datetime-edit-day-field,
+            &::-webkit-datetime-edit-year-field
+                color: $text !important
     .error-text
         font-size: 14px
         color: $error
@@ -287,15 +300,15 @@
         justify-content: center
 
     .spinner
-        width: 64px
-        height: 64px
+        width: 61px
+        height: 61px
         margin: 18px
         & > div
             position: absolute
-            width: 51px
-            height: 51px
-            margin: 6px
-            border: 6px solid $primary
+            width: 61px
+            height: 61px
+            margin: 5px
+            border: 3px solid $primary
             border-radius: 50%
             animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite
             border-color: $primary transparent transparent transparent
