@@ -295,6 +295,8 @@
         flex-direction: column
         justify-content: center
         height: 100vh
+    html, body
+        background-color: $bg-2
     body
         padding: 0
         font-family: 'Lato', sans-serif
@@ -369,15 +371,22 @@
 
     @media screen and (max-width: 1024px)
         #content
-            margin-top: 7em
+            margin-top: 1em
             margin-bottom: 5em
-
+        .container
+            padding-right: 2rem
+            padding-left: 2rem
     @media screen and (max-width: 640px)
         #content
-            margin-top: 5em
+            margin-top: 2em
             margin-bottom: 4em
-
+        .container
+            padding-right: 2rem
+            padding-left: 2rem
     @media screen and (max-width: 480px)
         .panel
             padding: 1em
+        .container
+            padding-right: 2rem
+            padding-left: 2rem
 </style>

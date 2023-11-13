@@ -57,8 +57,10 @@
             </div> -->
         </form>
         <div class="row" style="justify-content: space-between; padding: 0px 15px; align-items: center">
-            <div class="row" style="margin-left: 0px">
-                <div @click="stopGen" :disabled="!running" style="color: #a2a2a2">X&nbsp;&nbsp;&nbsp;&nbsp;Clear</div>
+            <div class="row" style="margin-left: 0px; cursor: pointer">
+                <div @click="stopGen" :disabled="!running" style="color: #a2a2a2">
+                    {{ running ? '← Back' : 'X&nbsp;&nbsp;&nbsp;&nbsp;Clear' }}
+                </div>
             </div>
             <div
                 class="gen-btn row button-large"
@@ -130,7 +132,14 @@
                 }
             },
             stopGen: function () {
-                this.$emit('stop');
+                if (this.running) {
+                    this.$emit('stop');
+                } else {
+                    this.prefix = '';
+                    this.suffix = '';
+                    this.checksum = false;
+                    this.error = false;
+                }
             },
         },
         watch: {
