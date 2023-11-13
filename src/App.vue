@@ -12,7 +12,11 @@
             </div>
             <div style="margin-top: 16px">
                 <div class="text-center" style="color: white">
-                    請填寫以下資訊，讓我們能夠在區塊鏈的茫茫宇宙中找到您的專屬錢包
+                    {{
+                        running
+                            ? '別著急，靈魂伴侶需要耐心等待，靈魂錢包也需要仔細尋找'
+                            : '請填寫以下資訊，讓我們能夠在區塊鏈的茫茫宇宙中找到您的專屬錢包'
+                    }}
                 </div>
             </div>
         </div>
@@ -34,6 +38,21 @@
 
         <!--Save modal-->
         <save :address="result.address.toLowerCase()" :private-key="result.privateKey"></save>
+        <div class="container" id="content" style="color: #a2a2a2; cursor: pointer">
+            <div style="text-decoration: underline" @click="toggleTerms">
+                {{ showTerms ? '▾' : '▸' }} terms of service
+            </div>
+            <div v-if="showTerms" style="color: #a2a2a2; text-decoration: none; margin-top: 1rem">
+                - 注意事項： 親愛的使用者，
+                歡迎您參加我們的活動並體驗靈魂錢包的魅力！在這裡，我們將為您生成一個獨一無二的錢包地址與私鑰，這是您在區塊鏈宇宙通行的重要門票。但在此，我們也想提醒您幾個關鍵的事項：
+                1. 私鑰保管：您對保護和使用您的私鑰擁有絕對的權利與義務。一旦遺失或洩露，可能會導致資產不可挽回的損失。
+                2.
+                免責條款：本活動及其主辦方不會存儲您的私鑰，也無法幫助您恢復遺失的私鑰。因此，我們對於任何因私鑰遺失或不當使用而導致的損失或問題概不負責。
+                3.
+                安全建議：我們強烈建議您在活動結束後立即將私鑰轉移到您個人安全的儲存空間，並遵循最佳安全實踐，KryptoGo
+                錢包是一個好選擇。 謝謝您的理解與合作，讓我們共同努力維護一個安全又有趣的資產環境！
+            </div>
+        </div>
     </div>
 </template>
 
@@ -56,6 +75,7 @@
                 input: { prefix: '', suffix: '', checksum: true },
                 firstTick: null,
                 error: null,
+                showTerms: false,
             };
         },
         watch: {
@@ -66,6 +86,9 @@
             },
         },
         methods: {
+            toggleTerms() {
+                this.showTerms = !this.showTerms;
+            },
             formatDate(dateString) {
                 // 分割日期字符串為年、月、日
                 const parts = dateString.split('-');

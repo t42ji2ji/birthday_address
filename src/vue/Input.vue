@@ -1,6 +1,7 @@
 <template>
     <div id="input-panel">
-        <div v-if="running">
+        <div style="height: 3rem"></div>
+        <div v-if="running" style="margin-bottom: 2rem">
             <div class="spinner">
                 <div></div>
                 <div></div>
@@ -67,10 +68,7 @@
                 :class="{ disabledButton: running || inputError || error }"
                 v-show="!running"
             >
-                <div>
-                    <input type="button" value="Generate" class="hide-render" disabled />
-                    <div @click="startGen">生成</div>
-                </div>
+                <div @click="startGen">生成</div>
                 <div v-if="!(running || inputError || error)" style="display: flex; align-items: center">
                     <img :src="require('@/assets/images/arrow.png')" width="16px" height="16px" />
                 </div>
