@@ -8,7 +8,7 @@
                 alt="Responsive image"
             />
             <div style="margin-top: 40px">
-                <h1 class="text-center" style="color: white; font-size: 48px">靈魂錢包生成器</h1>
+                <div class="text-center" style="color: white; font-size: 44px">靈魂錢包生成器</div>
             </div>
             <div style="margin-top: 16px">
                 <div class="text-center" style="color: white">
@@ -39,16 +39,18 @@
         <!--Save modal-->
         <save :address="result.address.toLowerCase()" :private-key="result.privateKey"></save>
         <div v-if="!running" class="container" id="content" style="color: #a2a2a2; cursor: pointer">
-            <div @click="toggleTerms" style="width: fit-content">{{ showTerms ? '▾' : '▸' }} terms of service</div>
+            <div @click="toggleTerms" style="width: fit-content">{{ showTerms ? '▾' : '▸' }} 注意事項</div>
             <div v-if="showTerms" style="color: #a2a2a2; margin-top: 1rem">
-                - 注意事項： 親愛的使用者，
-                歡迎您參加我們的活動並體驗靈魂錢包的魅力！在這裡，我們將為您生成一個獨一無二的錢包地址與私鑰，這是您在區塊鏈宇宙通行的重要門票。但在此，我們也想提醒您幾個關鍵的事項：
-                1. 私鑰保管：您對保護和使用您的私鑰擁有絕對的權利與義務。一旦遺失或洩露，可能會導致資產不可挽回的損失。
+                - 親愛的使用者，<br />
+                歡迎您參加我們的活動並體驗靈魂錢包的魅力！在這裡，我們將為您生成一個獨一無二的錢包地址與私鑰，這是您在區塊鏈宇宙通行的重要門票。但在此，我們也想提醒您幾個關鍵的事項：<br />
+                1.
+                私鑰保管：您對保護和使用您的私鑰擁有絕對的權利與義務。一旦遺失或洩露，可能會導致資產不可挽回的損失。<br />
                 2.
-                免責條款：本活動及其主辦方不會存儲您的私鑰，也無法幫助您恢復遺失的私鑰。因此，我們對於任何因私鑰遺失或不當使用而導致的損失或問題概不負責。
+                免責條款：本活動及其主辦方不會存儲您的私鑰，也無法幫助您恢復遺失的私鑰。因此，我們對於任何因私鑰遺失或不當使用而導致的損失或問題概不負責。<br />
                 3.
                 安全建議：我們強烈建議您在活動結束後立即將私鑰轉移到您個人安全的儲存空間，並遵循最佳安全實踐，KryptoGo
-                錢包是一個好選擇。 謝謝您的理解與合作，讓我們共同努力維護一個安全又有趣的資產環境！
+                錢包是一個好選擇。 謝謝您的理解與合作，讓我們共同努力維護一個安全又有趣的資產環境！<br />
+                <br /><br />
             </div>
         </div>
     </div>
@@ -221,6 +223,8 @@
             stopGen: function () {
                 this.running = false;
                 this.status = 'Stopped';
+                console.log('emit stop2');
+
                 for (let i = 0; i < this.workers.length; i++) {
                     this.workers[i].terminate();
                 }
@@ -325,6 +329,9 @@
         background-attachment: fixed
         font-size: 16px
 
+    input::-webkit-date-and-time-value
+        text-align: right
+
     h1, h2, h3, h4, h5, h6, p, label
         margin: 0
         font-weight: normal
@@ -380,7 +387,12 @@
             background: $disabled
             cursor: auto
 
-    /*-- Pre-render-specific --
+    input[type="date"]
+        display:block
+        -webkit-appearance: none !important
+        -moz-appearance: textfield
+        min-height: 1.2em
+
 
     #app.render .hide-render
         display: none
@@ -399,8 +411,11 @@
             padding-left: 2rem
     @media screen and (max-width: 640px)
         #content
-            margin-top: 2em
-            margin-bottom: 4em
+            margin-top: 0em
+            margin-bottom: 0em
+        #app
+            justify-content: start
+            margin-top: 1.5em
         .container
             padding-right: 2rem
             padding-left: 2rem

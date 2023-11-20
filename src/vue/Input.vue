@@ -26,7 +26,14 @@
                 </div>
                 <div class="col-12 col-sm-6 col-md-12 col-lg-6" :class="{ inputColor: !suffixError }">
                     <div style="color: white; margin-bottom: 8px">生日</div>
-                    <input type="date" class="text-input-large" id="input" v-model="suffix" :disabled="running" />
+                    <input
+                        class="text-input-large"
+                        id="input"
+                        type="date"
+                        placeholder="請輸入你的生日"
+                        v-model="suffix"
+                        :disabled="running"
+                    />
                 </div>
             </div>
 
@@ -34,7 +41,7 @@
                 <label class="checkbox" style="color: white">
                     <input type="checkbox" name="checkbox" checked="" v-model="checksum" :disabled="running" />
                     <i class="left"> </i>
-                    生成在結尾
+                    👼你的生日會生成在地址結尾喔👼
                 </label>
             </div>
             <!-- <div class="threads hide-prerender">
@@ -95,12 +102,14 @@
             running: Boolean,
             cores: Number,
         },
+        mounted: {},
         data: function () {
             return {
                 threads: this.$props.cores || 4,
                 prefix: '',
-                suffix: '',
-                checksum: false,
+                suffix: new Date().toISOString().substr(0, 10),
+
+                checksum: true,
                 error: false,
             };
         },
@@ -136,6 +145,7 @@
             },
             stopGen: function () {
                 if (this.running) {
+                    console.log('emit stop');
                     this.$emit('stop');
                 } else {
                     this.prefix = '';
@@ -166,7 +176,6 @@
     @import "../css/variables"
     .panel
         min-height: 280px
-
 
     .gen-btn
         border-radius: 12px
