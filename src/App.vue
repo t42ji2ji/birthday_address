@@ -8,7 +8,7 @@
                 alt="Responsive image"
             />
             <div style="margin-top: 40px">
-                <div class="text-center" style="color: white; font-size: 44px">靈魂錢包生成器 {{ running }}</div>
+                <div class="text-center" style="color: white; font-size: 44px">靈魂錢包生成器</div>
             </div>
             <div style="margin-top: 16px">
                 <div class="text-center" style="color: white">
