@@ -8,7 +8,7 @@
                 alt="Responsive image"
             />
             <div style="margin-top: 40px">
-                <div class="text-center" style="color: white; font-size: 44px">靈魂錢包生成器</div>
+                <div class="text-center" style="color: white; font-size: 44px">靈魂錢包生成器 {{ running }}</div>
             </div>
             <div style="margin-top: 16px">
                 <div class="text-center" style="color: white">
@@ -72,7 +72,7 @@
                 threads: 4,
                 cores: 0,
                 result: { address: '', privateKey: '' },
-                input: { prefix: '', suffix: '', checksum: true },
+                input: { prefix: '', suffix: '2023-01-01', checksum: true },
                 firstTick: null,
                 error: null,
                 showTerms: false,
@@ -205,14 +205,13 @@
 
                     if (deepCopiedInput.checksum) {
                         deepCopiedInput.prefix = '';
-                        deepCopiedInput.suffix = this.formatDate(deepCopiedInput.suffix);
+                        deepCopiedInput.suffix = this.formatDate(deepCopiedInput.suffix ?? '2023-01-01');
                     } else {
-                        deepCopiedInput.prefix = this.formatDate(deepCopiedInput.suffix);
+                        deepCopiedInput.prefix = this.formatDate(deepCopiedInput.suffix ?? '2023-01-01');
                         deepCopiedInput.suffix = '';
                     }
 
                     deepCopiedInput.checksum = false;
-                    console.log(deepCopiedInput);
                     this.workers[w].postMessage(deepCopiedInput);
                 }
 
@@ -223,7 +222,6 @@
             stopGen: function () {
                 this.running = false;
                 this.status = 'Stopped';
-                console.log('emit stop2');
 
                 for (let i = 0; i < this.workers.length; i++) {
                     this.workers[i].terminate();

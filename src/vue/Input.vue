@@ -1,6 +1,6 @@
 <template>
     <div id="input-panel">
-        <div style="height: 3rem"></div>
+        <div style="height: 3rem; color: white"></div>
         <div v-if="running" style="margin-bottom: 2rem">
             <div class="spinner">
                 <div></div>
@@ -64,11 +64,7 @@
                 <span v-if="threads === cores"> (recommended)</span>
             </div> -->
         </form>
-        <div
-            class="row"
-            style="justify-content: space-between; padding: 0px 15px; align-items: center"
-            @click="startGen"
-        >
+        <div class="row" style="justify-content: space-between; padding: 0px 15px; align-items: center">
             <div class="row" style="margin-left: 0px; cursor: pointer">
                 <div @click="stopGen" :disabled="!running" style="color: #a2a2a2">
                     {{ running ? '← Back' : 'X&nbsp;&nbsp;&nbsp;&nbsp;Clear' }}
@@ -78,8 +74,9 @@
                 class="gen-btn row button-large"
                 :class="{ disabledButton: running || inputError || error }"
                 v-show="!running"
+                @click="startGen"
             >
-                <div>生成</div>
+                <div style="font-weight: bold">生成</div>
                 <div v-if="!(running || inputError || error)" style="display: flex; align-items: center">
                     <img :src="require('@/assets/images/arrow.png')" width="16px" height="16px" />
                 </div>
@@ -107,7 +104,7 @@
             return {
                 threads: this.$props.cores || 4,
                 prefix: '',
-                suffix: new Date().toISOString().substr(0, 10),
+                suffix: '2023-01-01',
 
                 checksum: true,
                 error: false,
@@ -138,7 +135,7 @@
         },
         methods: {
             startGen: function () {
-                console.log('object');
+                console.log('startGen');
                 if (!this.running && !this.inputError && !this.error) {
                     this.$emit('start');
                 }
