@@ -65,7 +65,10 @@
                 <span v-if="threads === cores"> (recommended)</span>
             </div> -->
         </form>
-        <div class="row" style="justify-content: space-between; padding: 0px 15px; align-items: center">
+        <div
+            class="row"
+            style="justify-content: space-between; padding: 0px 15px; align-items: center; margin-top: 3.5em"
+        >
             <div class="row" style="margin-left: 0px; cursor: pointer">
                 <div @click="stopGen" :disabled="!running" style="color: #a2a2a2">
                     {{ running ? '← Back' : 'X&nbsp;&nbsp;&nbsp;&nbsp;Clear' }}
