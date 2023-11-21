@@ -37,12 +37,13 @@
                 </div>
             </div>
 
-            <div class="controls hide-prerender">
-                <label class="checkbox" style="color: white">
+            <div class="controls hide-prerender" style="color: white">
+                👼 你的生日會生成在地址結尾喔 👼
+                <!-- <label class="checkbox" style="color: white">
                     <input type="checkbox" name="checkbox" checked="" v-model="checksum" :disabled="running" />
                     <i class="left"> </i>
-                    👼你的生日會生成在地址結尾喔👼
-                </label>
+            
+                </label> -->
             </div>
             <!-- <div class="threads hide-prerender">
                 <input
